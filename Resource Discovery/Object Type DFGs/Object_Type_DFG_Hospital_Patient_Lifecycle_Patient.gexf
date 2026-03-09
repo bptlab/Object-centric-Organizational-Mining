@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Pre-Admission Consultation" label="Pre-Admission Consultation" />
+      <node id="Insurance Verification" label="Insurance Verification" />
+      <node id="Appointment Scheduling" label="Appointment Scheduling" />
+      <node id="Patient Arrival" label="Patient Arrival" />
+      <node id="Registration" label="Registration" />
+      <node id="Initial Evaluation" label="Initial Evaluation" />
+      <node id="Assign Bed" label="Assign Bed" />
+      <node id="Diagnostic Test Order" label="Diagnostic Test Order" />
+      <node id="Perform Diagnostic Test" label="Perform Diagnostic Test" />
+    </nodes>
+    <edges>
+      <edge source="Pre-Admission Consultation" target="Insurance Verification" id="0" weight="2000" />
+      <edge source="Insurance Verification" target="Appointment Scheduling" id="1" weight="2000" />
+      <edge source="Appointment Scheduling" target="Patient Arrival" id="2" weight="2000" />
+      <edge source="Patient Arrival" target="Registration" id="3" weight="2000" />
+      <edge source="Registration" target="Initial Evaluation" id="4" weight="2000" />
+      <edge source="Initial Evaluation" target="Assign Bed" id="5" weight="2000" />
+      <edge source="Assign Bed" target="Diagnostic Test Order" id="6" weight="321" />
+      <edge source="Diagnostic Test Order" target="Perform Diagnostic Test" id="7" weight="321" />
+    </edges>
+  </graph>
+</gexf>

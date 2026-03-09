@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Diagnostic Test Order" label="Diagnostic Test Order" />
+      <node id="Pre-Admission Consultation" label="Pre-Admission Consultation" />
+    </nodes>
+    <edges>
+      <edge source="Diagnostic Test Order" target="Pre-Admission Consultation" id="0" weight="257" />
+      <edge source="Diagnostic Test Order" target="Diagnostic Test Order" id="1" weight="42" />
+      <edge source="Pre-Admission Consultation" target="Pre-Admission Consultation" id="2" weight="1654" />
+      <edge source="Pre-Admission Consultation" target="Diagnostic Test Order" id="3" weight="268" />
+    </edges>
+  </graph>
+</gexf>

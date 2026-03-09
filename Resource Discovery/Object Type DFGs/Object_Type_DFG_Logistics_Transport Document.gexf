@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Create Transport Document" label="Create Transport Document" />
+      <node id="Book Vehicles" label="Book Vehicles" />
+      <node id="Order Empty Containers" label="Order Empty Containers" />
+      <node id="Depart" label="Depart" />
+      <node id="Reschedule Container" label="Reschedule Container" />
+    </nodes>
+    <edges>
+      <edge source="Create Transport Document" target="Book Vehicles" id="0" weight="594" />
+      <edge source="Book Vehicles" target="Order Empty Containers" id="1" weight="593" />
+      <edge source="Order Empty Containers" target="Depart" id="2" weight="561" />
+      <edge source="Order Empty Containers" target="Reschedule Container" id="3" weight="13" />
+      <edge source="Depart" target="Depart" id="4" weight="160" />
+      <edge source="Depart" target="Reschedule Container" id="5" weight="21" />
+      <edge source="Reschedule Container" target="Depart" id="6" weight="33" />
+      <edge source="Reschedule Container" target="Reschedule Container" id="7" weight="2" />
+    </edges>
+  </graph>
+</gexf>

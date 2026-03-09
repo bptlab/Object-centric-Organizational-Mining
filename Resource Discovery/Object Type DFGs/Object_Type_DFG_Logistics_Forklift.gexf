@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Weigh" label="Weigh" />
+      <node id="Place in Stock" label="Place in Stock" />
+      <node id="Bring to Loading Bay" label="Bring to Loading Bay" />
+      <node id="Load to Vehicle" label="Load to Vehicle" />
+    </nodes>
+    <edges>
+      <edge source="Weigh" target="Place in Stock" id="0" weight="1673" />
+      <edge source="Weigh" target="Load to Vehicle" id="1" weight="185" />
+      <edge source="Weigh" target="Bring to Loading Bay" id="2" weight="130" />
+      <edge source="Weigh" target="Weigh" id="3" weight="1" />
+      <edge source="Place in Stock" target="Bring to Loading Bay" id="4" weight="445" />
+      <edge source="Place in Stock" target="Weigh" id="5" weight="1326" />
+      <edge source="Place in Stock" target="Place in Stock" id="6" weight="23" />
+      <edge source="Place in Stock" target="Load to Vehicle" id="7" weight="20" />
+      <edge source="Bring to Loading Bay" target="Load to Vehicle" id="8" weight="1753" />
+      <edge source="Bring to Loading Bay" target="Weigh" id="9" weight="210" />
+      <edge source="Bring to Loading Bay" target="Bring to Loading Bay" id="10" weight="4" />
+      <edge source="Load to Vehicle" target="Weigh" id="11" weight="449" />
+      <edge source="Load to Vehicle" target="Bring to Loading Bay" id="12" weight="1390" />
+      <edge source="Load to Vehicle" target="Place in Stock" id="13" weight="118" />
+      <edge source="Load to Vehicle" target="Load to Vehicle" id="14" weight="8" />
+    </edges>
+  </graph>
+</gexf>

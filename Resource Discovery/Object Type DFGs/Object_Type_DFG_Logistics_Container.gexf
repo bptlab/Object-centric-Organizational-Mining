@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Order Empty Containers" label="Order Empty Containers" />
+      <node id="Pick Up Empty Container" label="Pick Up Empty Container" />
+      <node id="Load Truck" label="Load Truck" />
+      <node id="Drive to Terminal" label="Drive to Terminal" />
+      <node id="Weigh" label="Weigh" />
+      <node id="Place in Stock" label="Place in Stock" />
+      <node id="Bring to Loading Bay" label="Bring to Loading Bay" />
+      <node id="Load to Vehicle" label="Load to Vehicle" />
+      <node id="Depart" label="Depart" />
+      <node id="Reschedule Container" label="Reschedule Container" />
+    </nodes>
+    <edges>
+      <edge source="Order Empty Containers" target="Pick Up Empty Container" id="0" weight="1995" />
+      <edge source="Pick Up Empty Container" target="Load Truck" id="1" weight="1994" />
+      <edge source="Load Truck" target="Load Truck" id="2" weight="8559" />
+      <edge source="Load Truck" target="Drive to Terminal" id="3" weight="1989" />
+      <edge source="Drive to Terminal" target="Weigh" id="4" weight="1989" />
+      <edge source="Weigh" target="Place in Stock" id="5" weight="1814" />
+      <edge source="Weigh" target="Bring to Loading Bay" id="6" weight="175" />
+      <edge source="Place in Stock" target="Bring to Loading Bay" id="7" weight="1794" />
+      <edge source="Bring to Loading Bay" target="Load to Vehicle" id="8" weight="1931" />
+      <edge source="Bring to Loading Bay" target="Reschedule Container" id="9" weight="36" />
+      <edge source="Load to Vehicle" target="Depart" id="10" weight="1956" />
+      <edge source="Reschedule Container" target="Load to Vehicle" id="11" weight="35" />
+    </edges>
+  </graph>
+</gexf>

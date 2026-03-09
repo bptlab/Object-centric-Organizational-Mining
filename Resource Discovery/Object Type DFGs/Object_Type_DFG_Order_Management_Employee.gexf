@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-02-22">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="confirm order" label="confirm order" />
+      <node id="payment reminder" label="payment reminder" />
+      <node id="send package" label="send package" />
+      <node id="package delivered" label="package delivered" />
+      <node id="failed delivery" label="failed delivery" />
+      <node id="pick item" label="pick item" />
+      <node id="reorder item" label="reorder item" />
+      <node id="item out of stock" label="item out of stock" />
+      <node id="create package" label="create package" />
+    </nodes>
+    <edges>
+      <edge source="confirm order" target="confirm order" id="0" weight="1622" />
+      <edge source="confirm order" target="payment reminder" id="1" weight="378" />
+      <edge source="payment reminder" target="confirm order" id="2" weight="373" />
+      <edge source="payment reminder" target="payment reminder" id="3" weight="188" />
+      <edge source="send package" target="package delivered" id="4" weight="698" />
+      <edge source="send package" target="failed delivery" id="5" weight="164" />
+      <edge source="send package" target="send package" id="6" weight="379" />
+      <edge source="send package" target="pick item" id="7" weight="576" />
+      <edge source="send package" target="item out of stock" id="8" weight="136" />
+      <edge source="send package" target="create package" id="9" weight="92" />
+      <edge source="send package" target="reorder item" id="10" weight="131" />
+      <edge source="package delivered" target="send package" id="11" weight="774" />
+      <edge source="package delivered" target="package delivered" id="12" weight="268" />
+      <edge source="package delivered" target="failed delivery" id="13" weight="80" />
+      <edge source="failed delivery" target="package delivered" id="14" weight="162" />
+      <edge source="failed delivery" target="send package" id="15" weight="82" />
+      <edge source="failed delivery" target="failed delivery" id="16" weight="67" />
+      <edge source="pick item" target="pick item" id="17" weight="4545" />
+      <edge source="pick item" target="reorder item" id="18" weight="914" />
+      <edge source="pick item" target="item out of stock" id="19" weight="934" />
+      <edge source="pick item" target="send package" id="20" weight="609" />
+      <edge source="pick item" target="create package" id="21" weight="657" />
+      <edge source="reorder item" target="pick item" id="22" weight="920" />
+      <edge source="reorder item" target="send package" id="23" weight="107" />
+      <edge source="reorder item" target="reorder item" id="24" weight="194" />
+      <edge source="reorder item" target="create package" id="25" weight="151" />
+      <edge source="reorder item" target="item out of stock" id="26" weight="172" />
+      <edge source="item out of stock" target="pick item" id="27" weight="888" />
+      <edge source="item out of stock" target="item out of stock" id="28" weight="192" />
+      <edge source="item out of stock" target="create package" id="29" weight="156" />
+      <edge source="item out of stock" target="reorder item" id="30" weight="189" />
+      <edge source="item out of stock" target="send package" id="31" weight="119" />
+      <edge source="create package" target="send package" id="32" weight="102" />
+      <edge source="create package" target="pick item" id="33" weight="723" />
+      <edge source="create package" target="reorder item" id="34" weight="116" />
+      <edge source="create package" target="create package" id="35" weight="72" />
+      <edge source="create package" target="item out of stock" id="36" weight="110" />
+    </edges>
+  </graph>
+</gexf>

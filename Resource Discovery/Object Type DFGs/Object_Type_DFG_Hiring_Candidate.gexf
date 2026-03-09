@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Submit Application" label="Submit Application" />
+      <node id="Screen Resume" label="Screen Resume" />
+      <node id="Schedule Initial Interview" label="Schedule Initial Interview" />
+      <node id="Conduct Initial Interview" label="Conduct Initial Interview" />
+      <node id="Send Rejection Letter" label="Send Rejection Letter" />
+      <node id="Send Assessment" label="Send Assessment" />
+      <node id="Complete Assessment" label="Complete Assessment" />
+      <node id="Review Assessment" label="Review Assessment" />
+      <node id="Schedule Panel Interview" label="Schedule Panel Interview" />
+      <node id="Conduct Panel Interview" label="Conduct Panel Interview" />
+      <node id="Evaluate Interview" label="Evaluate Interview" />
+      <node id="Initiate Background Check" label="Initiate Background Check" />
+      <node id="Complete Background Check" label="Complete Background Check" />
+      <node id="Prepare Offer Letter" label="Prepare Offer Letter" />
+      <node id="Send Offer Letter" label="Send Offer Letter" />
+      <node id="Candidate Accept Offer" label="Candidate Accept Offer" />
+      <node id="Start Onboarding" label="Start Onboarding" />
+      <node id="Complete HR Paperwork" label="Complete HR Paperwork" />
+      <node id="Attend Orientation Training" label="Attend Orientation Training" />
+      <node id="Complete Onboarding" label="Complete Onboarding" />
+      <node id="Candidate Reject Offer" label="Candidate Reject Offer" />
+    </nodes>
+    <edges>
+      <edge source="Submit Application" target="Screen Resume" id="0" weight="3000" />
+      <edge source="Screen Resume" target="Schedule Initial Interview" id="1" weight="1811" />
+      <edge source="Screen Resume" target="Send Rejection Letter" id="2" weight="1189" />
+      <edge source="Schedule Initial Interview" target="Conduct Initial Interview" id="3" weight="1811" />
+      <edge source="Conduct Initial Interview" target="Send Rejection Letter" id="4" weight="900" />
+      <edge source="Conduct Initial Interview" target="Send Assessment" id="5" weight="911" />
+      <edge source="Send Assessment" target="Complete Assessment" id="6" weight="911" />
+      <edge source="Complete Assessment" target="Review Assessment" id="7" weight="911" />
+      <edge source="Review Assessment" target="Schedule Panel Interview" id="8" weight="462" />
+      <edge source="Review Assessment" target="Send Rejection Letter" id="9" weight="449" />
+      <edge source="Schedule Panel Interview" target="Conduct Panel Interview" id="10" weight="462" />
+      <edge source="Conduct Panel Interview" target="Evaluate Interview" id="11" weight="462" />
+      <edge source="Evaluate Interview" target="Initiate Background Check" id="12" weight="234" />
+      <edge source="Evaluate Interview" target="Send Rejection Letter" id="13" weight="228" />
+      <edge source="Initiate Background Check" target="Complete Background Check" id="14" weight="234" />
+      <edge source="Complete Background Check" target="Prepare Offer Letter" id="15" weight="123" />
+      <edge source="Complete Background Check" target="Send Rejection Letter" id="16" weight="111" />
+      <edge source="Prepare Offer Letter" target="Send Offer Letter" id="17" weight="123" />
+      <edge source="Send Offer Letter" target="Candidate Accept Offer" id="18" weight="91" />
+      <edge source="Send Offer Letter" target="Candidate Reject Offer" id="19" weight="32" />
+      <edge source="Candidate Accept Offer" target="Start Onboarding" id="20" weight="91" />
+      <edge source="Start Onboarding" target="Complete HR Paperwork" id="21" weight="91" />
+      <edge source="Complete HR Paperwork" target="Attend Orientation Training" id="22" weight="91" />
+      <edge source="Attend Orientation Training" target="Complete Onboarding" id="23" weight="91" />
+    </edges>
+  </graph>
+</gexf>

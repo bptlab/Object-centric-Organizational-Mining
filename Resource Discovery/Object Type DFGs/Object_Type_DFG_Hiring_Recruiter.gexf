@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-03-03">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="Post Job Opening" label="Post Job Opening" />
+      <node id="Screen Resume" label="Screen Resume" />
+      <node id="Schedule Initial Interview" label="Schedule Initial Interview" />
+      <node id="Conduct Initial Interview" label="Conduct Initial Interview" />
+    </nodes>
+    <edges>
+      <edge source="Post Job Opening" target="Post Job Opening" id="0" weight="90" />
+      <edge source="Post Job Opening" target="Screen Resume" id="1" weight="10" />
+      <edge source="Screen Resume" target="Schedule Initial Interview" id="2" weight="1811" />
+      <edge source="Screen Resume" target="Screen Resume" id="3" weight="1185" />
+      <edge source="Schedule Initial Interview" target="Conduct Initial Interview" id="4" weight="1811" />
+      <edge source="Conduct Initial Interview" target="Screen Resume" id="5" weight="1805" />
+    </edges>
+  </graph>
+</gexf>

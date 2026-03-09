@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-02-22">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="place order" label="place order" />
+      <node id="confirm order" label="confirm order" />
+      <node id="pick item" label="pick item" />
+      <node id="pay order" label="pay order" />
+      <node id="create package" label="create package" />
+      <node id="send package" label="send package" />
+      <node id="package delivered" label="package delivered" />
+      <node id="payment reminder" label="payment reminder" />
+      <node id="item out of stock" label="item out of stock" />
+      <node id="reorder item" label="reorder item" />
+      <node id="failed delivery" label="failed delivery" />
+    </nodes>
+    <edges>
+      <edge source="place order" target="confirm order" id="0" weight="5232" />
+      <edge source="place order" target="pick item" id="1" weight="1915" />
+      <edge source="place order" target="item out of stock" id="2" weight="495" />
+      <edge source="place order" target="create package" id="3" weight="17" />
+      <edge source="confirm order" target="pick item" id="4" weight="3528" />
+      <edge source="confirm order" target="pay order" id="5" weight="1363" />
+      <edge source="confirm order" target="create package" id="6" weight="1254" />
+      <edge source="confirm order" target="item out of stock" id="7" weight="895" />
+      <edge source="confirm order" target="send package" id="8" weight="210" />
+      <edge source="confirm order" target="reorder item" id="9" weight="268" />
+      <edge source="confirm order" target="package delivered" id="10" weight="89" />
+      <edge source="confirm order" target="payment reminder" id="11" weight="30" />
+      <edge source="confirm order" target="failed delivery" id="12" weight="22" />
+      <edge source="pick item" target="pay order" id="13" weight="777" />
+      <edge source="pick item" target="create package" id="14" weight="5290" />
+      <edge source="pick item" target="confirm order" id="15" weight="1495" />
+      <edge source="pick item" target="send package" id="16" weight="57" />
+      <edge source="pick item" target="payment reminder" id="17" weight="40" />
+      <edge source="pay order" target="create package" id="18" weight="1064" />
+      <edge source="pay order" target="pick item" id="19" weight="1236" />
+      <edge source="pay order" target="reorder item" id="20" weight="198" />
+      <edge source="pay order" target="send package" id="21" weight="286" />
+      <edge source="pay order" target="package delivered" id="22" weight="332" />
+      <edge source="pay order" target="failed delivery" id="23" weight="111" />
+      <edge source="pay order" target="item out of stock" id="24" weight="154" />
+      <edge source="create package" target="send package" id="25" weight="7100" />
+      <edge source="create package" target="pay order" id="26" weight="272" />
+      <edge source="create package" target="confirm order" id="27" weight="215" />
+      <edge source="create package" target="pick item" id="28" weight="66" />
+      <edge source="create package" target="payment reminder" id="29" weight="6" />
+      <edge source="send package" target="package delivered" id="30" weight="5917" />
+      <edge source="send package" target="failed delivery" id="31" weight="1270" />
+      <edge source="send package" target="pay order" id="32" weight="351" />
+      <edge source="send package" target="confirm order" id="33" weight="118" />
+      <edge source="send package" target="payment reminder" id="34" weight="3" />
+      <edge source="package delivered" target="pay order" id="35" weight="2562" />
+      <edge source="package delivered" target="payment reminder" id="36" weight="1606" />
+      <edge source="package delivered" target="confirm order" id="37" weight="110" />
+      <edge source="payment reminder" target="pay order" id="38" weight="1669" />
+      <edge source="payment reminder" target="payment reminder" id="39" weight="468" />
+      <edge source="payment reminder" target="create package" id="40" weight="24" />
+      <edge source="payment reminder" target="pick item" id="41" weight="45" />
+      <edge source="payment reminder" target="send package" id="42" weight="6" />
+      <edge source="payment reminder" target="package delivered" id="43" weight="2" />
+      <edge source="item out of stock" target="pay order" id="44" weight="147" />
+      <edge source="item out of stock" target="reorder item" id="45" weight="1078" />
+      <edge source="item out of stock" target="confirm order" id="46" weight="319" />
+      <edge source="reorder item" target="pick item" id="47" weight="869" />
+      <edge source="reorder item" target="pay order" id="48" weight="438" />
+      <edge source="reorder item" target="confirm order" id="49" weight="166" />
+      <edge source="reorder item" target="payment reminder" id="50" weight="61" />
+      <edge source="reorder item" target="create package" id="51" weight="10" />
+      <edge source="failed delivery" target="package delivered" id="52" weight="1319" />
+      <edge source="failed delivery" target="failed delivery" id="53" weight="617" />
+      <edge source="failed delivery" target="pay order" id="54" weight="80" />
+      <edge source="failed delivery" target="confirm order" id="55" weight="4" />
+    </edges>
+  </graph>
+</gexf>

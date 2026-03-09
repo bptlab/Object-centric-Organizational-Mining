@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-02-22">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="create package" label="create package" />
+      <node id="send package" label="send package" />
+      <node id="package delivered" label="package delivered" />
+      <node id="failed delivery" label="failed delivery" />
+    </nodes>
+    <edges>
+      <edge source="create package" target="send package" id="0" weight="1128" />
+      <edge source="send package" target="package delivered" id="1" weight="914" />
+      <edge source="send package" target="failed delivery" id="2" weight="214" />
+      <edge source="failed delivery" target="package delivered" id="3" weight="214" />
+      <edge source="failed delivery" target="failed delivery" id="4" weight="97" />
+    </edges>
+  </graph>
+</gexf>

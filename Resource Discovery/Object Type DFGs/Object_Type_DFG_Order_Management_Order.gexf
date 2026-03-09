@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-02-22">
+    <creator>NetworkX 3.2.1</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <nodes>
+      <node id="place order" label="place order" />
+      <node id="confirm order" label="confirm order" />
+      <node id="payment reminder" label="payment reminder" />
+      <node id="pay order" label="pay order" />
+    </nodes>
+    <edges>
+      <edge source="place order" target="confirm order" id="0" weight="2000" />
+      <edge source="confirm order" target="payment reminder" id="1" weight="443" />
+      <edge source="confirm order" target="pay order" id="2" weight="1557" />
+      <edge source="payment reminder" target="pay order" id="3" weight="443" />
+      <edge source="payment reminder" target="payment reminder" id="4" weight="123" />
+    </edges>
+  </graph>
+</gexf>
