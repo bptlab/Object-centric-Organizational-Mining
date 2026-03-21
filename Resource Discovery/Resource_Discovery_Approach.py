@@ -13,7 +13,7 @@ from datetime import datetime
 from dateutil.parser import parse
 
 #Set OpenAI API key
-api_key="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"
+api_key=""
 client = OpenAI(api_key=api_key)
 
 
