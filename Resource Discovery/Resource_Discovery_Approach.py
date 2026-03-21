@@ -280,7 +280,7 @@ if api_key.strip():
 
     # Hardcoded prompt
     CHATGPT_PROMPT = """
-    For the remainder of this task, completely disregard all prior definitions, assumptions, and associations related to the concept of “resource”. Do not rely on external knowledge, common usage, or previously learned interpretations of the term “resource.” You must strictly and only use the exact definition provided below as the sole valid conceptual basis for all following evaluations.
+    For the remainder of this task, completely disregard all prior definitions, assumptions, and associations related to the concept of "resources". Do not rely on external knowledge, common usage, or previously learned interpretations of the term “resources”. You must strictly and only use the exact definitions provided below as the sole valid conceptual basis for all following evaluations.
 
     Resource Definition:
     A resource is a uniquely identifiable \textbf{human or non-human entity} that \textbf{directly performs or supports} the execution of activities in business processes. It therefore needs to be considered an \textbf{essential enabler of work} in a business process that directly influences its performance. Moreover, resources are either classified as \textbf{active or passive}, depending on their ability to execute activities on their own (see additional definitions). Resources are furthermore defined by the following dimensions:
