@@ -1,3 +1,17 @@
+# This script performs the second step of the attribute analysis. The analyst needs to specify the analyzed resource object type, the object type and the attribute that is analyzed 
+# in detail, a threshold for the cosine similarity analysis of the cluster vectors and a threshold for the silhouette score of the clustering result.
+# The script then first runs k-means clustering of the attribute values using the elbow method for finding an optimal k. The cluster quality then is expressed with the 
+# silhouette score. Aferwards, the cluster-wise distributions per resource object are computed. Also, the cluster ranges are outputted, which determine the ranges for the case types
+# of the numerical case attributes. Lastly, the pairwise cosine similarities of the resource vectors that can be derived from the cluster-wise distribution table 
+# are computed and transformed in a graph. Based on the configured threshold, all edges (cosine similarities) are deleted.
+
+# The attribute is meaningful and can be included as a case type if:
+# - the silhouette score is over a predefined threshold (0.7 for instance) --> if not, script stops
+# - at least two disconnected components (subgroups) are found in the cosine similarity graph
+
+# - the case types can then be defined based on the cluster ranges
+
+
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import networkx as nx
@@ -15,7 +29,8 @@ analyzed_resource_object_type = "Employee"
 target_object_type = "Package"
 target_object_type_attribute = "weight"      
 input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Order_Management_adapted.xml"
-threshold = 0.97  
+cosine_similarity_threshold = 0.96  
+silhouette_score_threshold = 0.7
 
 
 # Load OCEL
@@ -132,6 +147,11 @@ if is_numeric:
     if optimal_k > 1:
         sil = silhouette_score(X_scaled, df["cluster"])
         print(f"\nSilhouette score (k={optimal_k}): {sil}")
+
+        # Cancel further analysis if silhouette score lower then threshold
+        if sil < silhouette_score_threshold:
+            print(f"Silhouette score {sil:.4f} is below threshold {silhouette_score_threshold}, analysis stopped.")
+            exit()  
     else:
         print("\nSilhouette score not available for k=1.")
 else:
@@ -139,15 +159,6 @@ else:
     df["cluster"] = df[target_object_type_attribute].astype(str)
     print(f"\nClusters assigned directly from categories: {df[target_object_type_attribute].unique()}")
 
-
-
-# Count distinct data points per cluster
-cluster_counts = df.groupby("cluster")[["resource_object", "target_object"]].nunique()
-print("\nDistinct data points per cluster")
-for c in cluster_counts.index:
-    emp_count = cluster_counts.loc[c, "resource_object"]
-    order_count = cluster_counts.loc[c, "target_object"]
-    print(f"Cluster {c}: {emp_count} employees, {order_count} orders")
 
 # Compute cluster-wise distribution per object of resource object type
 emp_cluster_counts = (
@@ -173,15 +184,29 @@ emp_stats_pivot = emp_stats.pivot(
 
 print("\nCluster-wise distribution per resource object (in percent)")
 print(emp_stats_pivot)
-# Compute min and max per cluster
-cluster_stats = df.groupby("cluster")[target_object_type_attribute].agg(["min", "max", "count"]).reset_index()
+
+# Count distinct data points per cluster
+cluster_counts = df.groupby("cluster")[["resource_object", "target_object"]].nunique()
+print("\nDistinct data points per cluster")
+for c in cluster_counts.index:
+    emp_count = cluster_counts.loc[c, "resource_object"]
+    order_count = cluster_counts.loc[c, "target_object"]
+    print(f"Cluster {c}: {emp_count} employees, {order_count} orders")
+
+
+# Compute min, max of clusters
+cluster_stats = df.groupby("cluster").agg(
+    min_value=(target_object_type_attribute, "min"),
+    max_value=(target_object_type_attribute, "max"),
+).reset_index()
+
 print("\nCluster value ranges:")
 for _, row in cluster_stats.iterrows():
-    c = row["cluster"]
-    mn = row["min"]
-    mx = row["max"]
-    n = row["count"]
-    print(f"Cluster {c}: min={mn}, max={mx}, count of sitinct target objects={n}")
+    c = int(row["cluster"])
+    mn = row["min_value"]
+    mx = row["max_value"]
+    print(f"Cluster {c}: min={mn}, max={mx}")
+
 
 # Resource Similarity Graph
 resource_ids = emp_stats_pivot.index.tolist()
@@ -189,33 +214,34 @@ resource_vectors = emp_stats_pivot.values
 cos_sim_matrix = cosine_similarity(resource_vectors)
 
 import pandas as pd
-pd.set_option("display.precision", 3)   # 3 Nachkommastellen
+pd.set_option("display.precision", 3)   
 cos_sim_df = pd.DataFrame(cos_sim_matrix, index=resource_ids, columns=resource_ids)
-print("\nCosine Similarity Matrix")
-print(cos_sim_df)
+# Print matrix
+#print("\nCosine Similarity Matrix")
+#print(cos_sim_df)
 
 G = nx.Graph()
 for i, res_id in enumerate(resource_ids):
     G.add_node(res_id)
 for i, j in combinations(range(len(resource_ids)), 2):
     sim = cos_sim_matrix[i, j]
-    if sim >= threshold:
+    if sim >= cosine_similarity_threshold:
         G.add_edge(resource_ids[i], resource_ids[j], attribute_value=sim)
 
-print(f"\nGraph built with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges (threshold={threshold})")
+print(f"\nGraph built with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges (cosine_similarity_threshold={cosine_similarity_threshold})")
 
 # Connected components = roles
 components = list(nx.connected_components(G))
 num_roles = len(components)
-print(f"\nDetected {num_roles} subgroups based on resource similarity:")
+print(f"\nDetected {num_roles} disconnected graph components (subgroups) based on resource similarity:")
 
 role_summary = []
 for idx, comp in enumerate(components, 1):
     comp_list = sorted(comp)
-    print(f" Role {idx}: {comp_list}")
+    print(f"\nSubgroup {idx}: {comp_list}")
     role_orders = df[df["resource_object"].isin(comp_list)]
     min_max_per_cluster = role_orders.groupby("cluster")[target_object_type_attribute].agg(["min", "max"]).reset_index()
-    print(f"  Cluster boundaries:")
+    print(f"Cluster boundaries:")
     print(min_max_per_cluster)
     role_summary.append((comp_list, min_max_per_cluster))
 
@@ -235,6 +261,6 @@ nx.draw_networkx_edges(
 nx.draw_networkx_labels(G, pos, font_size=10)
 edge_labels = {(u, v): f"{d['attribute_value']:.2f}" for u, v, d in edges}
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8)
-plt.title(f"Resource Similarity Graph (Edges: cosine similarity ≥ {threshold})")
+plt.title(f"Resource Similarity Graph (Edges: cosine similarity ≥ {cosine_similarity_threshold})")
 plt.axis("off")
 plt.show()
