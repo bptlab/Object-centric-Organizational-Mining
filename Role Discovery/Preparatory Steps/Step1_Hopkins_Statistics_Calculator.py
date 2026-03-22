@@ -1,3 +1,8 @@
+# This script analyzes the cluster tendency of all attributes of all object types except the currently analyzed resource object type by computing
+# the Hopkins statistics value per attribute.
+# It only calculates a value if the objects of the resource object type are connected to objects of the currently analyzed object type.
+
+
 import xml.etree.ElementTree as ET
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -6,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 import networkx as nx
 
-
+# Specify rtesource object type that should be analyzed in role discovery
 analyzed_resource_object_type = "Employee"  
 input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Order_Management_adapted.xml"
 
