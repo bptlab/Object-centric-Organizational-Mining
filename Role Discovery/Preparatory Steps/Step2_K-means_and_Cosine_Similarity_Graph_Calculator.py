@@ -26,10 +26,10 @@ import matplotlib.pyplot as plt
 from itertools import combinations
 
 # Configuration of analysis
-analyzed_resource_object_type = "Recruiter"
-target_object_type = "Candidate"
-target_object_type_attribute = "Entry Level"      
-input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Hiring_adapted.xml"
+analyzed_resource_object_type = "Employee"
+target_object_type = "Order"
+target_object_type_attribute = "price"      
+input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Order_Management_adapted.xml"
 cosine_similarity_threshold = 0.96  
 silhouette_score_threshold = 0.7
 
@@ -134,6 +134,8 @@ try:
 except ValueError:
     is_numeric = False
 
+#print(f"\nAttribute '{target_object_type_attribute}' numeric? {is_numeric}")
+
 if is_numeric:
     # numeric: StandardScaler + KMeans
     X = df[[target_object_type_attribute]].values
@@ -205,7 +207,7 @@ cluster_stats = df.groupby("cluster").agg(
 
 print("\nCluster value ranges:")
 for _, row in cluster_stats.iterrows():
-    c = int(row["cluster"])
+    c = row["cluster"]
     mn = row["min_value"]
     mx = row["max_value"]
     print(f"Cluster {c}: min={mn}, max={mx}")
@@ -244,7 +246,7 @@ for idx, comp in enumerate(components, 1):
     print(f"\nSubgroup {idx}: {comp_list}")
     role_orders = df[df["resource_object"].isin(comp_list)]
     min_max_per_cluster = role_orders.groupby("cluster")[target_object_type_attribute].agg(["min", "max"]).reset_index()
-    print(f"Cluster boundaries:")
+    print(f"Subgroup participates in these clusters:")
     print(min_max_per_cluster)
     role_summary.append((comp_list, min_max_per_cluster))
 

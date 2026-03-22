@@ -127,7 +127,7 @@ for event in events_section.findall("event"):
         otype = object_types.get(oid)
         if otype == candidate_objectType:
             candidate_ids.add(oid)
-        elif otype == "Recruiter":
+        elif otype == "HR Employee":
             recruiter_ids.add(oid)
     if not candidate_ids or not recruiter_ids:
         continue
