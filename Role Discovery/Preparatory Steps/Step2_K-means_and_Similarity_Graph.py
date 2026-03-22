@@ -3,9 +3,10 @@
 # The script then first runs k-means clustering of the attribute values using the elbow method for finding an optimal k. The cluster quality then is expressed with the 
 # silhouette score. Aferwards, the cluster-wise distributions per resource object are computed. Also, the cluster ranges are outputted, which determine the ranges for the case types
 # of the numerical case attributes. Lastly, the pairwise cosine similarities of the resource vectors that can be derived from the cluster-wise distribution table 
-# are computed and transformed in a graph. Based on the configured threshold, all edges (cosine similarities) are deleted.
+# are computed and transformed in a graph. Based on the configured threshold, all edges (edge weights = cosine similarities) with a weight below the cosine_similarity_threshold 
+# are deleted. Then, the script determines the amount of disconnected components.
 
-# The attribute is meaningful and can be included as a case type if:
+# The attribute is meaningful and can be included as a case attribute if:
 # - the silhouette score is over a predefined threshold (0.7 for instance) --> if not, script stops
 # - at least two disconnected components (subgroups) are found in the cosine similarity graph
 
@@ -24,7 +25,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 from itertools import combinations
 
-
+# Configuration of analysis
 analyzed_resource_object_type = "Employee"
 target_object_type = "Package"
 target_object_type_attribute = "weight"      
@@ -125,6 +126,7 @@ def determine_optimal_k(data, max_k=10):
     elbow_k = np.argmax(distances) + 1
     return elbow_k, distortions
 
+
 # K-Means clustering for attribute values
 try:
     df[target_object_type_attribute] = df[target_object_type_attribute].astype(float)
@@ -148,7 +150,7 @@ if is_numeric:
         sil = silhouette_score(X_scaled, df["cluster"])
         print(f"\nSilhouette score (k={optimal_k}): {sil}")
 
-        # Cancel further analysis if silhouette score lower then threshold
+        # Cancel further analysis if silhouette scoreis lower than threshold
         if sil < silhouette_score_threshold:
             print(f"Silhouette score {sil:.4f} is below threshold {silhouette_score_threshold}, analysis stopped.")
             exit()  
@@ -175,7 +177,7 @@ emp_stats = emp_cluster_counts.merge(emp_totals, on="resource_object")
 emp_stats["percent"] = 100 * emp_stats["count"] / emp_stats["total"]
 emp_stats = emp_stats.sort_values(["resource_object", "cluster"])
 
-# Pivot table for cosine similarity
+# Pivot table for cluster-wise distributions
 emp_stats_pivot = emp_stats.pivot(
     index="resource_object",
     columns="cluster",
@@ -185,7 +187,8 @@ emp_stats_pivot = emp_stats.pivot(
 print("\nCluster-wise distribution per resource object (in percent)")
 print(emp_stats_pivot)
 
-# Count distinct data points per cluster
+#Cluster statistics:
+# Count distinct data points (here: objects) per cluster
 cluster_counts = df.groupby("cluster")[["resource_object", "target_object"]].nunique()
 print("\nDistinct data points per cluster")
 for c in cluster_counts.index:
@@ -208,7 +211,7 @@ for _, row in cluster_stats.iterrows():
     print(f"Cluster {c}: min={mn}, max={mx}")
 
 
-# Resource Similarity Graph
+# Cosine Similarity Graph
 resource_ids = emp_stats_pivot.index.tolist()
 resource_vectors = emp_stats_pivot.values
 cos_sim_matrix = cosine_similarity(resource_vectors)
@@ -230,7 +233,7 @@ for i, j in combinations(range(len(resource_ids)), 2):
 
 print(f"\nGraph built with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges (cosine_similarity_threshold={cosine_similarity_threshold})")
 
-# Connected components = roles
+# Connected components = subgroups
 components = list(nx.connected_components(G))
 num_roles = len(components)
 print(f"\nDetected {num_roles} disconnected graph components (subgroups) based on resource similarity:")
@@ -246,7 +249,7 @@ for idx, comp in enumerate(components, 1):
     role_summary.append((comp_list, min_max_per_cluster))
 
 
-# 9. Visualization
+# Visualization of cosine similarity graph
 plt.figure(figsize=(12, 7))
 pos = nx.spring_layout(G, seed=42)
 nx.draw_networkx_nodes(G, pos, node_size=500, node_color="skyblue")
@@ -261,6 +264,6 @@ nx.draw_networkx_edges(
 nx.draw_networkx_labels(G, pos, font_size=10)
 edge_labels = {(u, v): f"{d['attribute_value']:.2f}" for u, v, d in edges}
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8)
-plt.title(f"Resource Similarity Graph (Edges: cosine similarity ≥ {cosine_similarity_threshold})")
+plt.title(f"Cosine Similarity Graph (Edges have cosine similarity ≥ {cosine_similarity_threshold})")
 plt.axis("off")
 plt.show()
