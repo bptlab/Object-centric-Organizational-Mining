@@ -1,0 +1,21 @@
+,Order.price=NaN | Package.weight=heavy,Order.price=NaN | Package.weight=light,Order.price=NaN | Package.weight=heavy,Order.price=NaN | Package.weight=light,Order.price=NaN | Package.weight=heavy,Order.price=NaN | Package.weight=light,Order.price=NaN | Package.weight=heavy,Order.price=NaN | Package.weight=light,Order.price=NaN | Package.weight=heavy,Order.price=NaN | Package.weight=NaN,Order.price=NaN | Package.weight=NaN,Order.price=NaN | Package.weight=NaN,Order.price=NaN | Package.weight=light,Order.price=luxury | Package.weight=NaN,Order.price=luxury | Package.weight=NaN,Order.price=cheap | Package.weight=NaN,Order.price=cheap | Package.weight=NaN
+,shipper.package delivered,shipper.package delivered,shipper.send package,shipper.send package,forwarder.send package,forwarder.send package,shipper.failed delivery,shipper.failed delivery,packer.create package,employee.item out of stock,employee.pick item,employee.reorder item,packer.create package,sales person.confirm order,sender.payment reminder,sales person.confirm order,sender.payment reminder
+,package delivered,package delivered,send package,send package,send package,send package,failed delivery,failed delivery,create package,item out of stock,pick item,reorder item,create package,confirm order,payment reminder,confirm order,payment reminder
+Viki Peeva,123.0,57.0,123.0,57.0,10.0,7.0,32.0,15.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Majid Rafiei,115.0,61.0,115.0,61.0,10.0,10.0,28.0,20.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Eduardo Goulart Rocha,126.0,72.0,126.0,72.0,5.0,9.0,46.0,21.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Alessandro Berti,135.0,73.0,135.0,73.0,12.0,10.0,37.0,12.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Yisong Zhang,124.0,60.0,124.0,60.0,7.0,14.0,28.0,18.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Gyunam Park,116.0,66.0,116.0,66.0,9.0,6.0,40.0,14.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Detlef Wetzeler,0.0,0.0,0.0,0.0,149.0,0.0,0.0,0.0,175.0,200.0,1025.0,217.0,0.0,0.0,0.0,0.0,0.0
+Christopher Schwanen,0.0,0.0,0.0,0.0,149.0,0.0,0.0,0.0,150.0,228.0,1069.0,204.0,0.0,0.0,0.0,0.0,0.0
+Benedikt Knopp,0.0,0.0,0.0,0.0,155.0,0.0,0.0,0.0,151.0,240.0,1104.0,203.0,0.0,0.0,0.0,0.0,0.0
+Marco Pegoraro,0.0,0.0,0.0,0.0,50.0,91.0,0.0,0.0,76.0,229.0,1113.0,235.0,101.0,0.0,0.0,0.0,0.0
+Nina Graves,0.0,0.0,0.0,0.0,61.0,70.0,0.0,0.0,76.0,209.0,1073.0,238.0,101.0,0.0,0.0,0.0,0.0
+Mahsa Bafrani,0.0,0.0,0.0,0.0,56.0,89.0,0.0,0.0,62.0,204.0,1172.0,222.0,101.0,0.0,0.0,0.0,0.0
+Leah Tacke genannt Unterberg,0.0,0.0,0.0,0.0,66.0,83.0,0.0,0.0,49.0,234.0,1103.0,225.0,86.0,0.0,0.0,0.0,0.0
+Istvan Koren,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,454.0,119.0,0.0,0.0
+Wil van der Aalst,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,461.0,148.0,0.0,0.0
+Mara Nitschke,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,305.0,76.0,0.0,0.0
+Jan Niklas Adams,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,267.0,80.0
+Christine von Dobbert,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,513.0,143.0

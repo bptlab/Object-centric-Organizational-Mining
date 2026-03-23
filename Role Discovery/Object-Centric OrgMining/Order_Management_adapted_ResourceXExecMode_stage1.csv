@@ -1,0 +1,20 @@
+,shipper.package delivered,shipper.send package,forwarder.send package,shipper.failed delivery,packer.create package,employee.item out of stock,employee.pick item,employee.reorder item,sales person.confirm order,sender.payment reminder
+,package delivered,send package,send package,failed delivery,create package,item out of stock,pick item,reorder item,confirm order,payment reminder
+Viki Peeva,180.0,180.0,17.0,47.0,0.0,0.0,0.0,0.0,0.0,0.0
+Majid Rafiei,176.0,176.0,20.0,48.0,0.0,0.0,0.0,0.0,0.0,0.0
+Eduardo Goulart Rocha,198.0,198.0,14.0,67.0,0.0,0.0,0.0,0.0,0.0,0.0
+Alessandro Berti,208.0,208.0,22.0,49.0,0.0,0.0,0.0,0.0,0.0,0.0
+Yisong Zhang,184.0,184.0,21.0,46.0,0.0,0.0,0.0,0.0,0.0,0.0
+Gyunam Park,182.0,182.0,15.0,54.0,0.0,0.0,0.0,0.0,0.0,0.0
+Detlef Wetzeler,0.0,0.0,149.0,0.0,175.0,200.0,1025.0,217.0,0.0,0.0
+Christopher Schwanen,0.0,0.0,149.0,0.0,150.0,228.0,1069.0,204.0,0.0,0.0
+Benedikt Knopp,0.0,0.0,155.0,0.0,151.0,240.0,1104.0,203.0,0.0,0.0
+Marco Pegoraro,0.0,0.0,141.0,0.0,177.0,229.0,1113.0,235.0,0.0,0.0
+Nina Graves,0.0,0.0,131.0,0.0,177.0,209.0,1073.0,238.0,0.0,0.0
+Mahsa Bafrani,0.0,0.0,145.0,0.0,163.0,204.0,1172.0,222.0,0.0,0.0
+Leah Tacke genannt Unterberg,0.0,0.0,149.0,0.0,135.0,234.0,1103.0,225.0,0.0,0.0
+Istvan Koren,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,454.0,119.0
+Wil van der Aalst,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,461.0,148.0
+Mara Nitschke,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,305.0,76.0
+Jan Niklas Adams,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,267.0,80.0
+Christine von Dobbert,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,513.0,143.0
