@@ -66,7 +66,7 @@ for obj in objects_section.findall("object"):
 
 print(f"O2O graph built: {O2O.number_of_nodes()} nodes, {O2O.number_of_edges()} edges")
 
-#3: Compute Average Degree + Normalized Score
+#3: Compute Average Degree + Normalized Score ---> Metrics 1 and 2
 def compute_normalized_degree_scores(G, graph_name, metric_number):
     degrees_by_type = defaultdict(list)
     for node, data in G.nodes(data=True):
@@ -99,7 +99,7 @@ def compute_normalized_degree_scores(G, graph_name, metric_number):
 df_O2O = compute_normalized_degree_scores(O2O, "O2O", metric_number=1)
 df_E2O = compute_normalized_degree_scores(E2O, "E2O", metric_number=2)
 
-#4: Compute Average Lifetime per Object Type (min–max normalized)
+#4: Compute Average Lifetime per Object Type (min–max normalized) --> Metric 3
 print("\n=== Metric 3: Average Object Type Lifetime ===")
 
 def parse_time(t):
@@ -148,7 +148,7 @@ df_lifetime = pd.DataFrame({
 
 print(df_lifetime.to_string(index=False))
 
-#5: Load Lifecycle Graphs & Compute Lifecycle Metrics
+#5: Load Lifecycle Graphs & Compute Lifecycle Metrics  --> Metrics 4 and 5
 lifecycle_folder = Path(".")
 #Path("Object Type DFGs")
 lifecycle_results = []
@@ -170,21 +170,14 @@ for gexf_file in lifecycle_folder.glob(f"Object_Type_DFG_{base_name}_*.gexf"):
     otype = gexf_file.stem.replace(f"Object_Type_DFG_{base_name}_", "")
     G_life = nx.read_gexf(gexf_file)
 
-    # --- Lifecycle resource metric (in/out degrees) ---
-    has_zero_in = any(G_life.in_degree(n) == 0 for n in G_life.nodes)
-    has_zero_out = any(G_life.out_degree(n) == 0 for n in G_life.nodes)
-    all_nodes_have_both = all(G_life.in_degree(n) > 0 and G_life.out_degree(n) > 0 for n in G_life.nodes)
-    in_and_out_degree_score = 0.5 if all_nodes_have_both else 0.0
-
-    # --- Graph Connectivity Metric ---
+    # --- Graph Connectivity Metric --- --> Metric 4
     if nx.is_weakly_connected(G_life.to_directed()):
         connectivity_score = 0.0  # weakly connected --> 0
     else:
         connectivity_score = 0.5  # disconnected --> 0.5
 
 
-    # Check if each weakly connected component is strongly connected
-    # Check if each weakly connected component is strongly connected
+    # Check if each weakly connected component is strongly connected --> Metric 4
     G_dir = G_life.to_directed()
     if nx.is_weakly_connected(G_dir):
         strongly_connected_score = 0.5 if nx.is_strongly_connected(G_dir) else 0.0
@@ -198,7 +191,7 @@ for gexf_file in lifecycle_folder.glob(f"Object_Type_DFG_{base_name}_*.gexf"):
                 break
 
 
-    # --- Edge-weight magnitude metric (excluding self-loops) ---
+    # --- Edge-weight magnitude metric (excluding self-loops) --- --> Metric 5
     n_objects_of_type = otype_object_counts.get(otype, 1)
     ratios_ok = True
     for u, v, data in G_life.edges(data=True):
@@ -222,7 +215,7 @@ df_lifecycle = pd.DataFrame(lifecycle_results)
 print("\n=== Metrics 4 and 5: Object Type DFG Analysis ===")
 print(df_lifecycle.to_string(index=False))
 
-
+# Metric 6
 #6: Extract context: Activity + Qualifier relations per object type
 from collections import defaultdict
 
@@ -259,7 +252,7 @@ for otype, rels in etype_qualifiers_by_otype.items():
 
 
 
-#7: ChatGPT Metric (hardcoded prompt)
+#7: ChatGPT Metric (hardcoded prompt) --> Metric 6
 
 if api_key.strip():
     def get_chatgpt_metric(prompt_text):
