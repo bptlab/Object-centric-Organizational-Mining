@@ -103,16 +103,30 @@ for obj in list(objects_section.findall("object")):
             objects_by_id.pop(oid, None)
 
 # 4. If an E2O relationship connected the event to an object with a removed ID, randomly replace it with an allowed ID from the same former object type (interviewer replaced with interviewer)
+# Create a mapping for the ID prefixes used in the XML
+id_prefix_map = {
+    "HiringManager": "HM",
+    "Recruiter": "R",
+    "Interviewer": "I"
+}
+
+# 4. Repair event references
 for event in events_section.findall("event"):
     rels = event.find("objects")
     if rels is None:
         continue
     for rel in rels.findall("relationship"):
         oid = rel.get("object-id")
-        for prefix, pool in allowed_object_IDs.items():
-            if oid.startswith(f"{prefix}_") and oid not in allowed_IDs_without_keys:
-                new_id = random.choice(pool)
-                rel.set("object-id", new_id)
+        
+        # Determine if this ID needs to be replaced
+        for type_name, pool in allowed_object_IDs.items():
+            shorthand = id_prefix_map[type_name]
+            
+            # Check if it starts with HM, R, or I
+            if oid.startswith(shorthand):
+                if oid not in allowed_IDs_without_keys:
+                    new_id = random.choice(pool)
+                    rel.set("object-id", new_id)
                 break
 
 # 5. Assign Entry Level to candidates based on recruiter levels

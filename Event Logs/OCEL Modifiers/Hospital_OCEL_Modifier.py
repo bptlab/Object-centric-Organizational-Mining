@@ -69,9 +69,12 @@ def process_ocel(input_file):
 
             for rel in rels.findall("relationship"):
                 oid = rel.get("object-id")
+                if not oid: continue
 
                 for prefix, pool in allowed_ids.items():
-                    if oid.startswith(f"{prefix}_") and oid not in all_allowed:
+                    search_prefix = f"{prefix.lower()}_" 
+                    
+                    if oid.startswith(search_prefix) and oid not in all_allowed:
                         new_id = random.choice(pool)
                         rel.set("object-id", new_id)
                         break
