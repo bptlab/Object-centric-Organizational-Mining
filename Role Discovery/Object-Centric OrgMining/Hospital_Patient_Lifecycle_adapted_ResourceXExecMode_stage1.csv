@@ -1,0 +1,20 @@
+,None.Pre-Admission Consultation,None.Diagnostic Test Order,None.Registration,None.Initial Evaluation,None.Perform Diagnostic Test
+,Pre-Admission Consultation,Diagnostic Test Order,Registration,Initial Evaluation,Perform Diagnostic Test
+physician_5,13.0,6.0,0.0,0.0,0.0
+physician_4,24.0,4.0,0.0,0.0,0.0
+physician_3,26.0,1.0,0.0,0.0,0.0
+physician_6,21.0,3.0,0.0,0.0,0.0
+physician_2,19.0,2.0,0.0,0.0,0.0
+physician_1,24.0,3.0,0.0,0.0,0.0
+nurse_2,0.0,0.0,8.0,8.0,0.0
+nurse_5,0.0,0.0,8.0,8.0,0.0
+nurse_6,0.0,0.0,3.0,3.0,0.0
+nurse_4,0.0,0.0,4.0,4.0,0.0
+nurse_3,0.0,0.0,3.0,3.0,0.0
+nurse_1,0.0,0.0,4.0,4.0,0.0
+labtechnician_4,0.0,0.0,0.0,0.0,5.0
+labtechnician_3,0.0,0.0,0.0,0.0,4.0
+labtechnician_2,0.0,0.0,0.0,0.0,4.0
+labtechnician_5,0.0,0.0,0.0,0.0,4.0
+labtechnician_1,0.0,0.0,0.0,0.0,5.0
+labtechnician_6,0.0,0.0,0.0,0.0,1.0

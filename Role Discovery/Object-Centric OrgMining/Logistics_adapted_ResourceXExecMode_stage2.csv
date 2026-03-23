@@ -1,0 +1,9 @@
+,Container.Weight=heavy,Container.Weight=heavy,Container.Weight=medium,Container.Weight=NaN,Container.Weight=medium,Container.Weight=NaN,Container.Weight=light,Container.Weight=light
+,TR laded.Load Truck,TR moved.Drive to Terminal,TR laded.Load Truck,TR laded.Load Truck,TR moved.Drive to Terminal,TR moved.Drive to Terminal,TR laded.Load Truck,TR moved.Drive to Terminal
+,Load Truck,Drive to Terminal,Load Truck,Load Truck,Drive to Terminal,Drive to Terminal,Load Truck,Drive to Terminal
+tr6,1807.0,333.0,0.0,0.0,0.0,0.0,0.0,0.0
+tr5,1785.0,335.0,0.0,0.0,0.0,0.0,0.0,0.0
+tr4,0.0,0.0,1737.0,5.0,331.0,1.0,0.0,0.0
+tr3,0.0,0.0,1735.0,21.0,331.0,4.0,0.0,0.0
+tr1,0.0,0.0,0.0,6.0,0.0,1.0,1741.0,331.0
+tr2,0.0,0.0,0.0,6.0,0.0,1.0,1710.0,321.0

@@ -11,21 +11,21 @@ from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 from pathlib import Path
 
 
-resource_object_type = "Employee"
-input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Order_Management_adapted.xml"
+resource_object_type = "Hospital Personal"
+input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Hospital_Patient_Lifecycle_adapted.xml"
 case_types = {
-    "Order": {
-        "price": [
-            (1.25, 99.86, "cheap"),
-            (10001.37, 11998.77, "luxury"),
-        ]
-    },  
-    "Package": {
-        "weight": [
-            (0.11, 4.9, "light"),
-            (10.11, 20, "heavy"),
-        ]
-    },  
+    # "Order": {
+    #     "price": [
+    #         (1.25, 99.86, "cheap"),
+    #         (10001.37, 11998.77, "luxury"),
+    #     ]
+    # },  
+    # "Package": {
+    #     "weight": [
+    #         (0.11, 4.9, "light"),
+    #         (10.11, 20, "heavy"),
+    #     ]
+    # },  
     # "Container": {
     #     "Weight": [
     #         (1.03,  49.81, "light"),
@@ -160,7 +160,7 @@ epsilon_vis = 1e-7
 Z_act_vis = Z_act.copy()
 Z_act_vis[:, 2] = Z_act[:, 2] + epsilon_vis
 
-plt.figure(figsize=(14, 10))
+plt.figure(figsize=(8, 4))
 
 # Plot the dendrogram
 dend = dendrogram(
@@ -254,7 +254,7 @@ for bc in unique_base_clusters:
         
 
         # Dendrogramm Plot
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 4))
         dendrogram(
             Z_sub,
             labels=resources_in_bc.tolist(),
