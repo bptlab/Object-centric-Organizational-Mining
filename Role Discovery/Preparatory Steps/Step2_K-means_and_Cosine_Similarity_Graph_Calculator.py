@@ -26,10 +26,10 @@ import matplotlib.pyplot as plt
 from itertools import combinations
 
 # Configuration of analysis
-analyzed_resource_object_type = "Employee"
-target_object_type = "Order"
-target_object_type_attribute = "price"      
-input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Order_Management_adapted.xml"
+analyzed_resource_object_type = "HR Employee"
+target_object_type = "Candidate"
+target_object_type_attribute = "Entry Level"      
+input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Hiring_adapted.xml"
 cosine_similarity_threshold = 0.96  
 silhouette_score_threshold = 0.7
 
