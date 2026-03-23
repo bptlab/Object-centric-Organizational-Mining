@@ -86,27 +86,27 @@ for ev in events_section.findall("event"):
     rels = ev.find("objects")
     if rels is None:
         continue
-    employees = set()
-    orders = set()
+    resource_objects = set()
+    target_objects = set()
     for rel in rels.findall("relationship"):
         oid = rel.get("object-id")
         otype = object_types.get(oid)
         if otype == analyzed_resource_object_type:
-            employees.add(oid)
+            resource_objects.add(oid)
         elif otype == target_object_type:
-            orders.add(oid)
-    for emp in employees:
-        for order in orders:
-            event_pairs.append((emp, order))
+            target_objects.add(oid)
+    for res in resource_objects:
+        for order in target_objects:
+            event_pairs.append((res, order))
 
 all_pairs = set(o2o_pairs + event_pairs)
 
 # Build Data Frame: one row per resource object-to-object inclusive value datapoint
 rows = []
-for emp, order in all_pairs:
+for res, order in all_pairs:
     val = object_attributes.get(order, {}).get(target_object_type_attribute)
     if val is not None:
-        rows.append([emp, order, val])
+        rows.append([res, order, val])
 
 df = pd.DataFrame(rows, columns=["resource_object", "target_object", target_object_type_attribute])
 print("\nData points used for clustering")
@@ -165,38 +165,38 @@ else:
 
 
 # Compute cluster-wise distribution per object of resource object type
-emp_cluster_counts = (
+res_cluster_counts = (
     df.groupby(["resource_object", "cluster"])
       .size()
       .reset_index(name="count")
 )
-emp_totals = (
+res_totals = (
     df.groupby("resource_object")
       .size()
       .reset_index(name="total")
 )
-emp_stats = emp_cluster_counts.merge(emp_totals, on="resource_object")
-emp_stats["percent"] = 100 * emp_stats["count"] / emp_stats["total"]
-emp_stats = emp_stats.sort_values(["resource_object", "cluster"])
+res_stats = res_cluster_counts.merge(res_totals, on="resource_object")
+res_stats["percent"] = 100 * res_stats["count"] / res_stats["total"]
+res_stats = res_stats.sort_values(["resource_object", "cluster"])
 
 # Pivot table for cluster-wise distributions
-emp_stats_pivot = emp_stats.pivot(
+res_stats_pivot = res_stats.pivot(
     index="resource_object",
     columns="cluster",
     values="percent"
 ).fillna(0)
 
 print("\nCluster-wise distribution per resource object (in percent)")
-print(emp_stats_pivot)
+print(res_stats_pivot)
 
 #Cluster statistics:
 # Count distinct data points (here: objects) per cluster
 cluster_counts = df.groupby("cluster")[["resource_object", "target_object"]].nunique()
 print("\nDistinct data points per cluster")
 for c in cluster_counts.index:
-    emp_count = cluster_counts.loc[c, "resource_object"]
+    res_count = cluster_counts.loc[c, "resource_object"]
     order_count = cluster_counts.loc[c, "target_object"]
-    print(f"Cluster {c}: {emp_count} employees, {order_count} orders")
+    print(f"Cluster {c}: {res_count} resource objects, {order_count} target objects")
 
 
 # Compute min, max of clusters
@@ -214,8 +214,8 @@ for _, row in cluster_stats.iterrows():
 
 
 # Cosine Similarity Graph
-resource_ids = emp_stats_pivot.index.tolist()
-resource_vectors = emp_stats_pivot.values
+resource_ids = res_stats_pivot.index.tolist()
+resource_vectors = res_stats_pivot.values
 cos_sim_matrix = cosine_similarity(resource_vectors)
 
 import pandas as pd
@@ -244,8 +244,8 @@ role_summary = []
 for idx, comp in enumerate(components, 1):
     comp_list = sorted(comp)
     print(f"\nSubgroup {idx}: {comp_list}")
-    role_orders = df[df["resource_object"].isin(comp_list)]
-    min_max_per_cluster = role_orders.groupby("cluster")[target_object_type_attribute].agg(["min", "max"]).reset_index()
+    role_target_objects = df[df["resource_object"].isin(comp_list)]
+    min_max_per_cluster = role_target_objects.groupby("cluster")[target_object_type_attribute].agg(["min", "max"]).reset_index()
     print(f"Subgroup participates in these clusters:")
     print(min_max_per_cluster)
     role_summary.append((comp_list, min_max_per_cluster))
