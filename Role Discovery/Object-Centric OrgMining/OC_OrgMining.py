@@ -1,4 +1,11 @@
-# 
+# This script implements the two stage Object-Centric OrgMining approach for the discovery of roles in OCELs
+# Analysts need to specify the resource object type for which roles should be found, the input file, and the case types
+# with ranges and labels (the case types for the example OCELs are already specified based on the preparatory steps). For categorical attributes, just use the category label as 
+# ranges: ("Associate", "Associate", "Associate")
+# The matrices for both stages are stored in the same folder as csv files.
+# the first dendrogram shpows the general roles. Based on the defined cut-off score in row 203, the general roles are defined and
+# analyzed in-depth in the second stage. Here, one dendrogram is plotted for each general role. Analysts can define subroles
+# based on these dendrograms and their own cut-off scores.
 
 
 import xml.etree.ElementTree as ET
@@ -14,6 +21,7 @@ from pathlib import Path
 resource_object_type = "Employee"
 input_file = Path(__file__).parent.parent.parent / "Event Logs" / "Order_Management_adapted.xml"
 case_types = {
+    # Case types for Order Management OCEL
     "Order": {
         "price": [
             (1.25, 99.86, "cheap"),
@@ -26,6 +34,8 @@ case_types = {
             (10.11, 20, "heavy"),
         ]
     },  
+
+    # Case types for Logistics OCEL
     # "Container": {
     #     "Weight": [
     #         (1.03,  49.81, "light"),
@@ -33,6 +43,8 @@ case_types = {
     #         (700.01,  899.9, "heavy"),
     #         ]
     #         }, 
+
+    # Case types for Hiring OCEL
     # "Candidate": {
     #     "Entry Level": [
     #         ("Associate", "Associate", "Associate"),
@@ -41,19 +53,18 @@ case_types = {
     #         }, 
 }
 
-
+# Map attribute value to case type
 def map_to_case_type(value, ranges):
     if value is None:
         return "NaN"
     
-    # Falls Wert bereits textuell, prüfe auf Match in den Kategorien
+    # If value is already textual, check for a direct match in the categories
     for lower, upper, label in ranges:
-        # Für kategoriale Werte setzen wir lower == upper == label
         if isinstance(value, str):
             if value == label:
                 return label
         else:
-            # sonst wie bisher für numerische Intervalle
+            # Otherwise, handle numeric intervals 
             try:
                 value_num = float(value)
                 l = float(lower) if lower is not None else -np.inf
@@ -64,7 +75,7 @@ def map_to_case_type(value, ranges):
                 continue
     return "NaN"
 
-# Load & extract data
+# Load and extract data
 tree = ET.parse(input_file)
 root = tree.getroot()
 
@@ -76,7 +87,7 @@ resource_ids = set()
 object_types = {}
 object_attributes = {}
 
-# Extract objects and attributes
+# Extract objects and their attributes
 for obj in objects_section.findall("object"):
     oid, otype = obj.get("id"), obj.get("type")
     object_types[oid] = otype
@@ -95,11 +106,12 @@ for obj in objects_section.findall("object"):
 
 # Resource x Execution Mode matrix computation:
 
-# Initialize execution mode dictionary: For every resource object store exectuion modes with count
-execution_modes_full = defaultdict(Counter)
-execution_modes_act = defaultdict(Counter)
+# Initialize execution mode dictionaries:
+# For every resource object, store execution modes with counts
+execution_modes_stage2 = defaultdict(Counter)
+execution_modes_stage1 = defaultdict(Counter)
 
-# Go over all events
+# Iterate over all events
 for ev in events_section.findall("event"):
     event_type = ev.get("type")
     rels = ev.find("objects")
@@ -125,56 +137,59 @@ for ev in events_section.findall("event"):
         if rid in resource_ids:
             rel_type = rel.get("qualifier", "NoQualifier")
             relation_type = f"{rel_type}.{event_type}"
-            execution_modes_act[rid][(relation_type, event_type)] += 1
-            execution_modes_full[rid][(case_dimension, relation_type, event_type)] += 1
+            execution_modes_stage1[rid][(relation_type, event_type)] += 1
+            execution_modes_stage2[rid][(case_dimension, relation_type, event_type)] += 1
 
-df_act = pd.DataFrame.from_dict(execution_modes_act, orient="index").fillna(0)
-df_full = pd.DataFrame.from_dict(execution_modes_full, orient="index").fillna(0)
+# Transform execution_modes_stage1 and execution_modes_stage2 in Data Frames for further analysis and excel output
+df_stage1 = pd.DataFrame.from_dict(execution_modes_stage1, orient="index").fillna(0)
+df_stage2 = pd.DataFrame.from_dict(execution_modes_stage2, orient="index").fillna(0)
 
 
-# OUTPUT DIRECTORY (same folder as input file)
+# Output directory for matrices (same folder as this script)
 output_dir = Path(__file__).resolve().parent
-# File names (adapted from input file name)
-base_name = input_file.stem  # e.g., "Order_Management_adapted"
+
+base_name = input_file.stem 
 
 act_file = output_dir / f"{base_name}_ResourceXExecMode_stage1.csv"
 full_file = output_dir / f"{base_name}_ResourceXExecMode_stage2.csv"
 
-# Save matrices
-df_act.to_csv(act_file)
-df_full.to_csv(full_file)
+# Save matrices to CSV files
+df_stage1.to_csv(act_file)
+df_stage2.to_csv(full_file)
 
 print(f"Saved activity matrix to: {act_file}")
 print(f"Saved full matrix to: {full_file}")
 
-#print(df_act.to_string())
+# print(df_stage1.to_string())
 
 
-# STUFE 1: DENDROGRAMM MIT SICHTBARKEITS-FIX & DEINEM STYLE
-Z_act = linkage(df_act, method='average', metric='cosine')
 
-# Epsilon für die Log-Skala (verhindert das Verschwinden von 0-Distanzen)
+# --------------- Stage 1 OC OrgMining ---------------
+
+# Configuration of AHC, run on df_stage1 (abstracted resource x execution mode matrix with only activity and relation types)
+Z_act = linkage(df_stage1, method='average', metric='cosine')
+
+# Epsilon for log scale (prevents disappearance of near zero distances)
 epsilon_vis = 1e-7
-
-# Erstelle eine Kopie für die Visualisierung mit minimalem Offset
 Z_act_vis = Z_act.copy()
 Z_act_vis[:, 2] = Z_act[:, 2] + epsilon_vis
 
+# Size of dendrogram
 plt.figure(figsize=(14, 10))
 
-# Plot the dendrogram
+# Plot dendrogram
 dend = dendrogram(
     Z_act_vis,
-    labels=df_act.index.tolist(),
+    labels=df_stage1.index.tolist(),
 )
 
-# Logarithmische Skalierung
+# Logarithmic scaling
 plt.yscale("log")
 
-# Limits setzen: Untergrenze ist unser epsilon_vis, Obergrenze 1.0
+# Set limits: lower bound is epsilon_vis, upper bound is 1.0
 plt.ylim(epsilon_vis, 1.0)
 
-# Ticks setzen (der unterste Tick wird als "0" beschriftet, obwohl er technisch epsilon ist)
+# Set ticks on y-axis
 plt.yticks(
             [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1], 
             ["1e-6", "1e-5", "1e-4", "0.001", "0.01", "0.1", "1"], 
@@ -184,80 +199,59 @@ plt.yticks(
 plt.xticks(fontsize=14, rotation=90)
 plt.ylabel("Cosine Distance", fontsize=14)
 
-
-# Linienstärke für die Verbindungen (Zweige)
+# Line width for dendrogram branches
 plt.setp(plt.gca().get_lines(), linewidth=4)
 
-# Linienstärke für die vertikalen Linien am Boden (Collections)
 for coll in plt.gca().collections:
     coll.set_linewidth(4)
-# --------------------
 
 plt.tight_layout()
 plt.show()
 
-base_clusters = fcluster(Z_act, t=0.4, criterion='distance')
-df_full["Base_Cluster"] = base_clusters
+# Assign clusters after stage 1 --> t = Cut-off score for dendrogram that causes split into clusters below that score
+stage1_clusters = fcluster(Z_act, t=0.4, criterion='distance')
+df_stage2["Stage1_Cluster"] = stage1_clusters
 
 
 
-# STUFE 2: SUB-CLUSTERING MIT GEWICHTETEN SUB-ROLLEN-SPALTEN
-unique_base_clusters = np.unique(base_clusters)
-all_sub_max = []  # globales Maximum sammeln
-feature_cols = [c for c in df_full.columns if c not in ["Base_Cluster", "Final_Cluster"]]
+# --------------- Stage 2 OC OrgMining ---------------
+# unique_stage1_clusters = number of general role clusters after stage 1
+unique_stage1_clusters = np.unique(stage1_clusters)
+# Select only feature columns with execution mode counts
+feature_cols = [c for c in df_stage2.columns if c not in ["Stage1_Cluster", "Final_Cluster"]]
 
-# Zuerst alle Sub-Cluster Distanzen sammeln
-for bc in unique_base_clusters:
-    resources_in_bc = df_full[df_full["Base_Cluster"] == bc].index
-    if len(resources_in_bc) > 1:
-        sub_df = df_full.loc[resources_in_bc, feature_cols].copy()
+# Loop over each stage 1 general role cluster
+for cluster in unique_stage1_clusters:
+    # Get resource objects of current cluster
+    resources_in_cluster = df_stage2[df_stage2["Stage1_Cluster"] == cluster].index
+
+    # Only proceed if more than 1 resource object in cluster
+    if len(resources_in_cluster) > 1:
+        # Build horizontal sub matrix with only rows for resource objects that are in current cluster
+        sub_df = df_stage2.loc[resources_in_cluster, feature_cols].copy()
         
-        
-        subrolle_spalten_indices = [
+        # Identify important columns where at least one resource has a zero and another >0 (columns with both 0 and >0 values)
+        important_column_indices = [
             i for i, col in enumerate(sub_df.columns)
             if (sub_df[col] == 0).any() and (sub_df[col] > 0).any()
         ]
         
+        # Create weights for important columns
         weights = np.ones(sub_df.shape[1])
-        weights[subrolle_spalten_indices] = 10
-        
+        weights[important_column_indices] = 10
+        # Apply weights
         X_weighted = sub_df.values * weights
         
+        # Perform AHC with weighted columns
         Z_sub = linkage(X_weighted, method='average', metric='cosine')
-        all_sub_max.append(np.max(Z_sub[:, 2]))
 
-# 2Globales Maximum
-global_max = max(all_sub_max)
-epsilon = 1e-6  # gegen log(0)
+        epsilon = 1e-6  # avoid log(0)
 
-# Nun Plot & Cluster-Zuweisung für jeden Sub-Cluster
-for bc in unique_base_clusters:
-    resources_in_bc = df_full[df_full["Base_Cluster"] == bc].index
-    if len(resources_in_bc) > 1:
-        sub_df = df_full.loc[resources_in_bc, feature_cols].copy()
-        
-        
-        
-        subrolle_spalten_indices = [
-            i for i, col in enumerate(sub_df.columns)
-            if (sub_df[col] == 0).any() and (sub_df[col] > 0).any()
-        ]
-        
-        weights = np.ones(sub_df.shape[1])
-        weights[subrolle_spalten_indices] = 10
-        
-        X_weighted = sub_df.values * weights
-        X_norm = normalize(X_weighted, axis=1)
-        
-        
-        Z_sub = linkage(X_norm, method='average', metric='cosine')
-        
-
-        # Dendrogramm Plot
+        # Plot dendrogram
         plt.figure(figsize=(14, 10))
         dendrogram(
             Z_sub,
-            labels=resources_in_bc.tolist(),
+            labels=resources_in_cluster.tolist(),
             leaf_rotation=90
         )
         plt.yscale("log")
@@ -277,10 +271,9 @@ for bc in unique_base_clusters:
         plt.tight_layout()
         plt.show()
         
-
-        # Cluster-Zuweisung auf ORIGINAL-Distanzen
-        sub_labels = fcluster(Z_sub, t=0.1, criterion='distance')
-        for i, rid in enumerate(resources_in_bc):
-            df_full.at[rid, "Final_Cluster"] = f"{bc}.{sub_labels[i]}"
-    else:
-        df_full.at[resources_in_bc[0], "Final_Cluster"] = f"{bc}.0"
+    #     # Cluster assignment based on original distances
+    #     sub_labels = fcluster(Z_sub, t=0.1, criterion='distance')
+    #     for i, rid in enumerate(resources_in_cluster):
+    #         df_stage2.at[rid, "Final_Cluster"] = f"{cluster}.{sub_labels[i]}"
+    # else:
+    #     df_stage2.at[resources_in_cluster[0], "Final_Cluster"] = f"{cluster}.0"
