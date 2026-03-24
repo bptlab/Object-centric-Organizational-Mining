@@ -191,12 +191,12 @@ for gexf_file in lifecycle_folder.glob(f"Object_Type_DFG_{base_name}_*.gexf"):
                 break
 
 
-    # --- Edge-weight magnitude metric (excluding self-loops) --- --> Metric 5
+    # --- Edge-weight magnitude metric --- --> Metric 5
     n_objects_of_type = otype_object_counts.get(otype, 1)
     ratios_ok = True
     for u, v, data in G_life.edges(data=True):
-        if u == v:
-            continue  # skip self-loops
+        # if u == v:
+        #     continue  # skip self-loops (for now not skipped and self-loops count too)
         weight = data.get("weight", 1)
         ratio = weight / n_objects_of_type
         if ratio <= 1:
