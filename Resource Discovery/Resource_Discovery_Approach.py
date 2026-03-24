@@ -17,6 +17,8 @@ api_key=""
 client = OpenAI(api_key=api_key)
 
 
+# Note: As the Hiring and Hospital logs object types are changed in the adapted version, choose their original logs to reproduce the
+# resource discovery results.
 ################## -->Specify OCEL XML that should be analyzed ##################
 input_file = Path(__file__).parent.parent / "Event Logs" / "Order_Management_adapted.xml"
 
@@ -81,10 +83,15 @@ def compute_normalized_degree_scores(G, graph_name, metric_number):
 
     min_deg = min(avg_deg_by_type.values())
     max_deg = max(avg_deg_by_type.values())
-    norm_scores = {
-        otype: 1.0 if max_deg == min_deg else (avg_deg - min_deg) / (max_deg - min_deg)
-        for otype, avg_deg in avg_deg_by_type.items()
-    }
+
+    # Assign score of 0 to all object types if OCEL has no O2O relations
+    if graph_name == "O2O" and G.number_of_edges() == 0:
+        norm_scores = {otype: 0.0 for otype in avg_deg_by_type}
+    else:
+        norm_scores = {
+            otype: 1.0 if max_deg == min_deg else (avg_deg - min_deg) / (max_deg - min_deg)
+            for otype, avg_deg in avg_deg_by_type.items()
+        }
 
     df = pd.DataFrame({
         "object_type": list(avg_deg_by_type.keys()),
@@ -196,7 +203,7 @@ for gexf_file in lifecycle_folder.glob(f"Object_Type_DFG_{base_name}_*.gexf"):
     ratios_ok = True
     for u, v, data in G_life.edges(data=True):
         # if u == v:
-        #     continue  # skip self-loops (for now not skipped and self-loops count too)
+        #     continue  # skip self-loops (for now, self-loops not skipped)
         weight = data.get("weight", 1)
         ratio = weight / n_objects_of_type
         if ratio <= 1:
